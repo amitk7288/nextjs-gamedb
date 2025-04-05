@@ -3,10 +3,13 @@
 import { useState, useEffect, useRef, FormEvent } from "react";
 import { PiMagnifyingGlassBold } from "react-icons/pi";
 import { useRouter } from "next/navigation";
+import useStore from "@/store/store";
 
-export default function Search({isSearchOpen}: {isSearchOpen?: boolean}) {
+export default function Search() {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
+  const isSearchOpen = useStore((state) => state.isSearchOpen);
+  const setSearchOpen = useStore((state) => state.setSearchOpen);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
   const router = useRouter();
 
@@ -24,7 +27,7 @@ export default function Search({isSearchOpen}: {isSearchOpen?: boolean}) {
     if (normalisedQuery !== "") {
       router.push(`/search/${normalisedQuery}`);
     }
-    isSearchOpen = false;
+    setSearchOpen(false);
     setSearchQuery("");
   }
 
