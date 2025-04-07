@@ -15,7 +15,7 @@ export default function Header() {
    const [isMobMenuOpen, setIsMobMenuOpen] = useState(false);
 
   return (
-    <header id="mainHeader" className="3xl:w-[calc(100%_-_12vw)] dark:border-drkbrd dark:bg-drkbg dark:text-drkcol fixed right-0 top-0 h-[80px] w-full border-b bg-white py-5 pl-[12px] pr-5 lg:w-[calc(100%_-_20vw)] lg:p-5 xl:w-[calc(100%_-_18vw)] 2xl:w-[calc(100%_-_15vw)]">
+    <header id="mainHeader" className="3xl:w-[calc(100%_-_12vw)] dark:border-drkbrd dark:bg-drkbg dark:text-drkcol fixed right-0 top-0 h-[80px] w-full border-b border-gray-300 bg-white py-5 pl-[12px] pr-5 lg:w-[calc(100%_-_20vw)] lg:p-5 xl:w-[calc(100%_-_18vw)] 2xl:w-[calc(100%_-_15vw)]">
       <div id="mobile search" className={`absolute left-0 ${isSearchOpen ? `top-0 flex flex-col justify-center` : `top-[-80px]`} duration-400 dark:bg-drkbg2 z-10 h-[inherit] w-full bg-[#f7f7f7] transition-all ease-in-out lg:hidden`} ref={searchMobContainer}>
         <Search />
       </div>

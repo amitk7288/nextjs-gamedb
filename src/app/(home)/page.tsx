@@ -1,7 +1,9 @@
+import FeaturedGame from "@/modules/home/ui/components/featured-game/FeaturedGame";
+
 export default function Home() {
   return (
     <div>
-     <p>Home page content</p>
+     <FeaturedGame />
     </div>
   );
 }
