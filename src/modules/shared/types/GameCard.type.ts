@@ -1,4 +1,4 @@
-export interface GameCardType {
+export interface GameCardProps {
   notify: boolean;
   img: string;
   title: string;

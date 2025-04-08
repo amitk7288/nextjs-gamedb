@@ -4,12 +4,11 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useState, useEffect } from "react";
 import menuItems from "@/modules/home/data/MenuItems";
-import { MenuItemType } from "@/modules/home/types/MenuItemType";
+import { MenuItemProps } from "@/modules/home/types/MenuItem.type";
 
 export default function MenuItems() {
-
   const pathname = usePathname();
-  const [items, setItems] = useState <MenuItemType[]>(menuItems);
+  const [items, setItems] = useState<MenuItemProps[]>(menuItems);
 
   useEffect(() => {
     setItems((prevState) =>
