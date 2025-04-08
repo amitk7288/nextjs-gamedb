@@ -1,5 +1,5 @@
 import { PiSquaresFour, PiSquaresFourDuotone, PiBook, PiBookDuotone, PiUsers, PiUsersDuotone, PiHeart, PiHeartDuotone, PiMagicWand, PiMagicWandDuotone, PiBookmarkSimple, PiBookmarkSimpleDuotone } from "react-icons/pi";
-import { MenuItemType } from "../types/MenuItemType";
+import { MenuItemType } from "../types/MenuItem.type";
 
 const menuItems: MenuItemType[] = [
   {

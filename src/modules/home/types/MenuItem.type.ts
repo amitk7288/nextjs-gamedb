@@ -1,6 +1,6 @@
 import { IconType } from "react-icons";
 
-export interface MenuItemType {
+export interface MenuItemProps {
   id: number;
   icon: IconType;
   activeIcon: IconType;
