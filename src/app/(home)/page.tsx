@@ -1,9 +1,11 @@
 import FeaturedGame from "@/modules/home/ui/components/featured-game/FeaturedGame";
+import GameCard from "@/modules/shared/ui/components/gamecard/GameCard";
 
 export default function Home() {
   return (
     <div>
      <FeaturedGame />
+     <GameCard />
     </div>
   );
 }
