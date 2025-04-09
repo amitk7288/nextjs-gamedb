@@ -16,7 +16,7 @@ function ThemeAndProfile() {
   };
 
     useEffect(() => {
-      function handleClickOutside(event: MouseEvent) {
+      function handleClickOutside(event: React.MouseEvent<HTMLDivElement>) {
         if (searchMobContainer.current && !searchMobContainer.current.contains(event.target as Node)) {
           setSearchOpen(false);
         }
