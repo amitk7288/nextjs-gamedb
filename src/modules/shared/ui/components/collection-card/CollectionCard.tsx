@@ -7,8 +7,8 @@ import game from "../../../../../../public/hogwarts-legacy.webp";
 import hl1 from "../../../../../../public/hl-1.jpg";
 import hl2 from "../../../../../../public/hl-2.jpg";
 import { PiXBold } from "react-icons/pi";
-//import Modal from "../../components/ui-components/Modal";
-//mport ConfirmDelete from "./ConfirmDelete";
+import Modal from "../../components/ui-components/Modal";
+import ConfirmDelete from "@/modules/shared/ui/components/confirm-delete/ConfirmDelete";
 
 interface CollectionCardProps {
   title: string;
