@@ -1,13 +1,16 @@
 "use client";
 
 import { PiSun, PiMoonStars, PiMagnifyingGlass } from "react-icons/pi";
+//import { useTheme, useSetTheme } from "@/store/theme.store";
 import useDarkMode from "@/hooks/useDarkMode";
 import useStore from "@/store/store";
-import { useEffect, useRef } from "react";
+//import { useEffect, useRef } from "react";
 
 function ThemeAndProfile() {
   const [theme, toggleTheme] = useDarkMode();
-  const searchMobContainer = useRef<HTMLDivElement>(null);
+  // const theme = useTheme();
+  // const toggleTheme = useSetTheme();
+  // const searchMobContainer = useRef<HTMLDivElement>(null);
   const isSearchOpen = useStore((state) => state.isSearchOpen);
   const setSearchOpen = useStore((state) => state.setSearchOpen);
 
@@ -15,18 +18,18 @@ function ThemeAndProfile() {
     setSearchOpen(!isSearchOpen);
   };
 
-    useEffect(() => {
-      function handleClickOutside(event: React.MouseEvent<HTMLDivElement>) {
-        if (searchMobContainer.current && !searchMobContainer.current.contains(event.target as Node)) {
-          setSearchOpen(false);
-        }
-      }
+    // useEffect(() => {
+    //   function handleClickOutside(event: React.MouseEvent<HTMLDivElement>) {
+    //     if (searchMobContainer.current && !searchMobContainer.current.contains(event.target as Node)) {
+    //       setSearchOpen(false);
+    //     }
+    //   }
 
-      document.addEventListener("mousedown", handleClickOutside);
-      return () => {
-        document.removeEventListener("mousedown", handleClickOutside);
-      };
-    }, [searchMobContainer, setSearchOpen]);
+    //   document.addEventListener("mousedown", handleClickOutside);
+    //   return () => {
+    //     document.removeEventListener("mousedown", handleClickOutside);
+    //   };
+    // }, [searchMobContainer, setSearchOpen]);
 
   return (
     <div id="right-box" className="flex basis-auto items-center justify-between gap-3">

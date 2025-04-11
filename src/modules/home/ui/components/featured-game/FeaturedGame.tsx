@@ -12,7 +12,7 @@ export default function FeaturedGame() {
         <div className="absolute m-3 flex items-center gap-2">{/* <GenreTag /> */}</div>
         <div className="absolute bottom-0 right-0 z-10 m-3 flex items-center gap-2">
           <Link href={`/game/906547/hogwarts-legacy`}>
-            <button className="from-gradPink hover:to-gradPink to-gradOrange hover:from-gradOrange dark:border-drkbrd dark:bg-drkbg flex w-fit items-center justify-center rounded-md bg-gradient-to-r px-2 py-[5px] dark:text-white">
+            <button className="from-blue-500 hover:to-blue-500 to-green-600 hover:from-green-600 dark:border-drkbrd dark:bg-drkbg flex w-fit items-center justify-center rounded-md bg-gradient-to-r px-2 py-[5px] dark:text-white cursor-pointer">
               <p className="xs:text-base text-xs tracking-wider text-white 2xl:text-base">&nbsp;View game</p>
             </button>
           </Link>
