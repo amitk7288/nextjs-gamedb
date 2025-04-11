@@ -1,13 +1,13 @@
 import Image from "next/image";
-import gameImg from "../../../../../../public/hogwarts-legacy.webp"
+import { GameCardProps } from "@/modules/game/types/GameCard.type";
 
-function GameCard() {
+function GameCard({title, img, rating, genre}: GameCardProps) {
   return (
     <div data-testid="gamecard" className="h-[100%] cursor-pointer">
       <div className="text-drkcol grid w-full grid-rows-[200px_auto] overflow-hidden rounded-[10px] bg-slate-800">
         {/* Image Section */}
         <div className="relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden">
-          <Image src={gameImg} alt="game title" className="h-full w-[420px] object-cover" />
+          <Image src={img} width={420} height={200} alt="game title" className="h-full w-[420px] object-cover" />
           {/* Icon Buttons */}
           <div className="absolute bottom-[10px] right-[10px] flex gap-[10px]">
             <button data-testid="fav-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border">
@@ -27,16 +27,16 @@ function GameCard() {
           {/* Header (Title and Rating) */}
           <div className="grid grid-cols-[80%_20%]">
             <h3 data-testid="gameTitle" className="text-xl font-semibold text-white">
-              title
+              {title}
             </h3>
             <div className="flex h-[fit-content] items-center justify-end gap-[5px]">
-              <p>rating</p>
+              <p>{rating}</p>
               <div className="flex items-center justify-center"></div>
             </div>
           </div>
 
           {/* Genre */}
-          <span className="text-sm">genre</span>
+          <span className="text-sm">{genre}</span>
 
           {/* Platforms */}
           <div className="flex gap-[5px]">

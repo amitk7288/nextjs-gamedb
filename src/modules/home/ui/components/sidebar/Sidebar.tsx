@@ -10,7 +10,7 @@ export default function Sidebar() {
           <div className="w-full">
             <Link href="/">
               <div className="flex items-center gap-4">
-                <div className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-green-400">
+                <div className="flex h-[35px] w-[35px] items-center justify-center rounded-full bg-gradient-to-r from-blue-500 to-green-600">
                   <TbBrandNextjs className="text-3xl text-white" />
                 </div>
                 <p className="text-2xl font-medium lg:text-lg xl:text-xl 2xl:text-2xl">

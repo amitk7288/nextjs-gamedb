@@ -1,8 +1,8 @@
 export interface GameCardProps {
-  notify: boolean;
+  notify?: boolean;
   img: string;
   title: string;
+  rating: number;
   genre: string;
   slug: string;
-  game: string;
 }

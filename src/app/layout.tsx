@@ -1,13 +1,12 @@
 import type { Metadata } from "next";
 import { Outfit } from "next/font/google";
 import "./globals.css";
+import Providers from "@/context/providers";
 
 const outfit = Outfit({
   variable: "--font-outfit",
   subsets: ["latin"],
 });
-
-
 
 export const metadata: Metadata = {
   title: "Next Games",
@@ -21,7 +20,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={`${outfit.className} antialiased`}>{children}</body>
+      <body className={`${outfit.className} antialiased`}>
+        <Providers>{children}</Providers>
+      </body>
     </html>
   );
 }
