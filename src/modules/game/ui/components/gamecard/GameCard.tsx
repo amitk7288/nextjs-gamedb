@@ -7,7 +7,7 @@ function GameCard({title, img, rating, genre}: GameCardProps) {
       <div className="text-drkcol grid w-full grid-rows-[200px_auto] overflow-hidden rounded-[10px] bg-slate-800">
         {/* Image Section */}
         <div className="relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden">
-          <Image src={img} width={420} height={200} alt="game title" className="h-full w-[420px] object-cover" />
+          <Image src={img} width={420} height={200} alt="game title" className="h-full object-cover" />
           {/* Icon Buttons */}
           <div className="absolute bottom-[10px] right-[10px] flex gap-[10px]">
             <button data-testid="fav-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border">
