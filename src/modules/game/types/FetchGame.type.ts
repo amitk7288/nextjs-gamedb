@@ -1,5 +1,5 @@
 export interface FetchGameProps {
-  genreId: number;
+  genreId: number | string;
   page: number;
   pageSize: number;
 }
