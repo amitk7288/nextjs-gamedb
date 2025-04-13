@@ -1,12 +1,14 @@
 import Image from "next/image";
+import { StaticImageData } from "next/image";
 
 interface FriendCardProps {
-  img: string;
+  img: StaticImageData | string;
   name: string;
-  game1: string;
-  game2: string;
-  game3: string;
+  game1: StaticImageData | string;
+  game2: StaticImageData | string;
+  game3: StaticImageData | string;
 }
+
 
 export default function FriendCard({ img, name, game1, game2, game3 }: FriendCardProps) {
   return (
