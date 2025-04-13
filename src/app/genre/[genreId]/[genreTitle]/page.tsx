@@ -27,7 +27,7 @@ export default function Genre() {
   return (
     <CardGridPage title={`${genreTitle.name} games`} desc={`A list of ${genreTitle.name} games`} icon={PiSquaresFourDuotone}>
       {data?.map((game) => (
-        <GameCard key={game.id} title={game.name} img={game.background_image} rating={game.metacritic} genre={game.genres[0]?.name} slug={game.slug} />
+        <GameCard key={game.id} title={game.name} img={game.background_image} rating={game.metacritic} genre={game.genres[0]?.name} slug={game.slug} parentPlatforms={game.parent_platforms} />
       ))}
     </CardGridPage>
   );
