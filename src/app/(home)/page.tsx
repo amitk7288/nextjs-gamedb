@@ -55,19 +55,19 @@ if (isError) return <p>Error loading games: {actionError?.message || rpgError?.m
       </div>
       <CardGridSection title={"Action"} icon={GiPistolGun} btnLink={`/genre/4/action`}>
         {actionGames?.map((game) => (
-          <GameCard key={game.id} title={game.name} img={game.background_image} rating={game.metacritic} genre={game.genres[0]?.name} slug={game.slug} parentPlatforms={game.parent_platforms} />
+          <GameCard key={game.id} id={game.id} title={game.name} img={game.background_image} rating={game.metacritic} genre={game.genres[0]?.name} slug={game.slug} parentPlatforms={game.parent_platforms} />
         ))}
       </CardGridSection>
 
       <CardGridSection title={"RPG"} icon={PiSwordBold} btnLink={`/genre/5/role-playing-games-rpg`}>
         {rpgGames?.map((game) => (
-          <GameCard key={game.id} title={game.name} img={game.background_image} rating={game.metacritic} genre={game.genres[0]?.name} slug={game.slug} parentPlatforms={game.parent_platforms} />
+          <GameCard key={game.id} id={game.id} title={game.name} img={game.background_image} rating={game.metacritic} genre={game.genres[0]?.name} slug={game.slug} parentPlatforms={game.parent_platforms} />
         ))}
       </CardGridSection>
 
       <CardGridSection title={"Indie"} icon={MdGamepad} btnLink={`/genre/51/indie`}>
         {indieGames?.map((game) => (
-          <GameCard key={game.id} title={game.name} img={game.background_image} rating={game.metacritic} genre={game.genres[0]?.name} slug={game.slug} parentPlatforms={game.parent_platforms}  />
+          <GameCard key={game.id} id={game.id} title={game.name} img={game.background_image} rating={game.metacritic} genre={game.genres[0]?.name} slug={game.slug} parentPlatforms={game.parent_platforms} />
         ))}
       </CardGridSection>
     </>

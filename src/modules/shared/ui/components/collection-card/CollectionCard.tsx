@@ -2,13 +2,14 @@
 
 import { useState } from "react";
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import game from "../../../../../../public/hogwarts-legacy.webp";
 import hl1 from "../../../../../../public/hl-1.jpg";
 import hl2 from "../../../../../../public/hl-2.jpg";
 import { PiXBold } from "react-icons/pi";
-import Modal from "../../components/ui-components/Modal";
+import Modal from "../modal/Modal";
 import ConfirmDelete from "@/modules/shared/ui/components/confirm-delete/ConfirmDelete";
+import cleanupSlug from "@/utils/slugify";
 
 interface CollectionCardProps {
   title: string;
@@ -19,9 +20,11 @@ interface CollectionCardProps {
 export default function CollectionCard({ title, numGames, id }: CollectionCardProps) {
   const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
+  console.log("Router object:", router);
 
   function handleNavigateClick() {
-   router.push(`/collection/${id}/${title}`);
+   const slug = cleanupSlug(title);
+   router.push(`/collections/${id}/${slug}`);
   }
   function handleDeleteClick(event: React.MouseEvent<HTMLDivElement>) {
     event.stopPropagation();

@@ -1,22 +1,31 @@
 "use client";
 
 import React from "react";
-import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 import { GameCardProps } from "@/modules/game/types/GameCard.type";
 import { PlatformIcons } from "@/modules/game/data/platformIcons";
 import { RiHeart3Line, RiHeart3Fill, RiBookmarkFill, RiStarFill } from "react-icons/ri";
 import { PiMagicWand, PiMagicWandFill } from "react-icons/pi";
 import { MdOutlineBookmarkAdd } from "react-icons/md";
+import cleanupSlug from "@/utils/slugify";
 
 
-function GameCard({ title, img, rating, genre, parentPlatforms }: GameCardProps) {
+function GameCard({ title, img, rating, genre, parentPlatforms, id }: GameCardProps) {
    const [fav, setFav] = useState<boolean>(false);
    const [wish, setWish] = useState<boolean>(false);
    const [save, setSave] = useState<boolean>(false);
 
+   const router = useRouter();
+
+   const handleNavigate = () => {
+    const slug = cleanupSlug(title);
+    router.push(`/game/${id}/${slug}`);
+   }
+
   return (
-    <div data-testid="gamecard" className="h-[100%] cursor-pointer">
+    <div data-testid="gamecard" className="h-[100%] cursor-pointer" onClick={handleNavigate}>
       <div className="text-drkcol grid w-full grid-rows-[200px_auto] overflow-hidden rounded-[10px] bg-slate-800">
         {/* Image Section */}
         <div className="relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden">
