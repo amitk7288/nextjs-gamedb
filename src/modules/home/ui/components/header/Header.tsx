@@ -1,7 +1,6 @@
 "use client";
 
 import Search from "../search/Search";
-import ThemeAndProfile from "./ThemeAndProfile";
 import MenuItems from "../sidebar/MenuItems";
 import useStore from "@/store/store";
 import Link from "next/link";
@@ -46,7 +45,6 @@ export default function Header() {
             <Search />
           </div>
         </div>
-        <ThemeAndProfile />
       </div>
 
       {isMobMenuOpen && (

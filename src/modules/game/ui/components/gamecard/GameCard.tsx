@@ -32,13 +32,31 @@ function GameCard({ title, img, rating, genre, parentPlatforms, id }: GameCardPr
           <Image src={img} width={420} height={200} alt="game title" className="h-full w-[420px] object-cover" />
           {/* Icon Buttons */}
           <div className="absolute bottom-[10px] right-[10px] flex gap-[10px]">
-            <button data-testid="fav-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border" onClick={() => setFav(prevState => !prevState)}>
+            <button
+              data-testid="fav-button"
+              className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border"
+              onClick={(e) => {
+                e.stopPropagation();
+                setFav((prevState) => !prevState);
+              }}>
               {fav ? <RiHeart3Fill data-testid="favedGame" className="text-red-500" /> : <RiHeart3Line data-testid="unfavedGame" />}
             </button>
-            <button data-testid="wish-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border" onClick={() => setWish(prevState => !prevState)}>
+            <button
+              data-testid="wish-button"
+              className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border"
+              onClick={(e) => {
+                e.stopPropagation();
+                setWish((prevState) => !prevState);
+              }}>
               {wish ? <PiMagicWandFill data-testid="wishedGame" className="text-lime-500" /> : <PiMagicWand data-testid="unwishedGame" />}
             </button>
-            <button data-testid="save-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border" onClick={() => setSave(prevState => !prevState)}>
+            <button
+              data-testid="save-button"
+              className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border"
+              onClick={(e) => {
+                e.stopPropagation();
+                setSave((prevState) => !prevState);
+              }}>
               {save ? <RiBookmarkFill data-testid="savedGame" className="text-sky-500" /> : <MdOutlineBookmarkAdd data-testid="unsavedGame" className="text-xl" />}
             </button>
           </div>
@@ -71,10 +89,10 @@ function GameCard({ title, img, rating, genre, parentPlatforms, id }: GameCardPr
                 return platformIcon ? (
                   <li key={p.platform.id}>
                     {typeof platformIcon === "function" ? (
-                      React.createElement(platformIcon, { className: "text-[16px]" }) // Render IconType
+                      React.createElement(platformIcon, { className: "text-[16px]" })
                     ) : (
                       <Image
-                        src={platformIcon as string} // Render string-based `src` for Image
+                        src={platformIcon as string}
                         alt={p.platform.name}
                         width={20}
                         height={20}

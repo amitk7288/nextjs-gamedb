@@ -4,5 +4,5 @@ export interface CardGridSectionProps {
   children: React.ReactNode;
   title: string;
   icon: IconType;
-  btnLink: string;
+  btnLink?: string;
 }

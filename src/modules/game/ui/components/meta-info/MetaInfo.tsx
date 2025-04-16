@@ -8,9 +8,9 @@ interface MetaInfoProps {
 
 export default function MetaInfo({ icon, name, value }: MetaInfoProps) {
   return (
-    <div className="dark:border-drkbrd rounded-lg border px-2 py-1">
+    <div className="dark:border-drkbrd rounded-lg border border-[#e5e7eb] px-2 py-1">
       <div className="flex items-center gap-1">
-        <div className="text-xl">icon</div>
+        <div className="text-xl">{icon({})}</div>
         <p className="xs:text-base text-sm font-extralight dark:text-white 2xl:text-xl 2xl:font-light">{name}</p>
       </div>
       <div>
