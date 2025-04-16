@@ -4,6 +4,7 @@ import { useState, useEffect, useRef, FormEvent } from "react";
 import { PiMagnifyingGlassBold } from "react-icons/pi";
 import { useRouter } from "next/navigation";
 import useStore from "@/store/store";
+import cleanupSlug from "@/utils/slugify";
 
 export default function Search() {
   const [searchQuery, setSearchQuery] = useState<string>("");
@@ -23,7 +24,7 @@ export default function Search() {
 
   function handleSearchSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    const normalisedQuery = searchQuery.trim().replace(/\s+/g, " ");
+    const normalisedQuery = cleanupSlug(searchQuery.trim());
     if (normalisedQuery !== "") {
       router.push(`/search/${normalisedQuery}`);
     }

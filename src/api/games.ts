@@ -28,6 +28,12 @@ export async function fetchGames({ genreId, page = 1, pageSize = 40 }: FetchGame
 
 }
 
+export async function fetchGamesByTitle({search}: {search: string}) {
+  const res = await fetch(`${base_url}/games?key=${api_key}&search=${search}`);
+  const data = await res.json();
+  return data;
+}
+
 export async function fetchGameById({gameId}: FetchGameProps) {
   const res = await fetch(`${base_url}/games/${gameId}?key=${api_key}`);
   const data = res.json();

@@ -7,7 +7,7 @@ type ParentPlatform = {
 };
 
 export interface GameCardProps {
-  id?: string,
+  id?: string | number,
   notify?: boolean;
   img: string;
   title: string;
