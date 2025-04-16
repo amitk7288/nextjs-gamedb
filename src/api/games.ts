@@ -27,3 +27,33 @@ export async function fetchGames({ genreId, page = 1, pageSize = 40 }: FetchGame
   return allGames.slice(0, pageSize);
 
 }
+
+export async function fetchGameById({gameId}: FetchGameProps) {
+  const res = await fetch(`${base_url}/games/${gameId}?key=${api_key}`);
+  const data = res.json();
+  return data;
+}
+
+export async function fetchAchievements({ gameId, page}: FetchGameProps) {
+  const res = await fetch(`${base_url}/games/${gameId}/achievements?key=${api_key}&page=${page}`);
+  const data = await res.json();
+  return data;
+}
+
+export async function fetchScreenshots({gameId}: FetchGameProps) {
+   const res = await fetch(`${base_url}/games/${gameId}/screenshots?key=${api_key}`);
+   const data = await res.json();
+   return data;
+}
+
+export async function fetchDLCS({gameId}: FetchGameProps) {
+  const res = await fetch(`${base_url}/games/${gameId}/additions?key=${api_key}`);
+  const data = await res.json();
+  return data;
+}
+
+export async function fetchRelated({gameId}: FetchGameProps) {
+  const res = await fetch(`${base_url}/games/${gameId}/game-series?key=${api_key}`);
+  const data = await res.json();
+  return data;
+}

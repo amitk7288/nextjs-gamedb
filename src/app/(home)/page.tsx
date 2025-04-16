@@ -16,7 +16,6 @@ export default function Home() {
     error: actionError,
   } = useFetchGames({
     genreId: 4,
-    page: 1,
     pageSize: 10,
   });
 
@@ -27,7 +26,6 @@ export default function Home() {
     error: rpgError,
   } = useFetchGames({
     genreId: 5,
-    page: 1,
     pageSize: 10,
   });
 
@@ -38,15 +36,14 @@ export default function Home() {
     error: indieError,
   } = useFetchGames({
     genreId: 51,
-    page: 1,
     pageSize: 10,
   });  
 
 const isLoading = isActionPending || isRpgPending || isIndiePending;
 const isError = isActionError || isRpgError || isIndieError;
 
-if (isLoading) return <p>Loading games...</p>;
-if (isError) return <p>Error loading games: {actionError?.message || rpgError?.message || indieError?.message}</p>;
+if (isLoading) return <p>Loading Games...</p>;
+if (isError) return <p>Error Loading Games: {actionError?.message || rpgError?.message || indieError?.message}</p>;
 
   return (
     <>
