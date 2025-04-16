@@ -55,7 +55,7 @@ const friends = [
 
 export default function Friends() {
   return (
-    <CardGridPage title={`Friends`} desc={`A hardcoded page showing youre friends and what they're currently playing`} icon={PiUsersDuotone}>
+    <CardGridPage title={`Friends`} desc={`A hardcoded page showing your friends and what they're currently playing`} icon={PiUsersDuotone}>
       {friends.map((f) => (
         <FriendCard key={f.id} img={f.img} name={f.name} game1={f.game1} game2={f.game2} game3={f.game3} />
       ))}

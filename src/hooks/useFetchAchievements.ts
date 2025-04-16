@@ -1,16 +1,3 @@
-// "use client";
-
-// import { fetchAchievements } from "@/api/games";
-// import { FetchGameProps } from "@/modules/game/types/FetchGame.type";
-// import { useQuery } from "@tanstack/react-query";
-
-// export function useFetchAchievements({ gameId, page }: FetchGameProps) {
-//   return useQuery({
-//     queryKey: ["fetchAchievements", gameId],
-//     queryFn: () => fetchAchievements({ gameId, page }),
-//   });
-// }
-
 "use client";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
