@@ -1,15 +1,15 @@
 "use client";
 
 import { PiSun, PiMoonStars, PiMagnifyingGlass } from "react-icons/pi";
-//import { useTheme, useSetTheme } from "@/store/theme.store";
-import useDarkMode from "@/hooks/useDarkMode";
+import { useTheme, useSetTheme } from "@/store/theme.store";
+//import useDarkMode from "@/hooks/useDarkMode";
 import useStore from "@/store/store";
 //import { useEffect, useRef } from "react";
 
 function ThemeAndProfile() {
-  const [theme, toggleTheme] = useDarkMode();
-  // const theme = useTheme();
-  // const toggleTheme = useSetTheme();
+  // const [theme, toggleTheme] = useDarkMode();
+    const theme = useTheme();
+    const toggleTheme = useSetTheme();
   // const searchMobContainer = useRef<HTMLDivElement>(null);
   const isSearchOpen = useStore((state) => state.isSearchOpen);
   const setSearchOpen = useStore((state) => state.setSearchOpen);
