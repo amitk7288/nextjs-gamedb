@@ -7,7 +7,7 @@ import Achievement from "@/modules/game/ui/components/achievement/Achievement";
 import CardGridSection from "@/modules/shared/ui/components/card-grid-section/CardGridSection";
 import GameCard from "@/modules/game/ui/components/gamecard/GameCard";
 import MetaInfo from "@/modules/game/ui/components/meta-info/MetaInfo";
-//import AddToCollection from "@/modules/shared/ui/components/add-to-collection/AddToCollection";
+import AddToCollection from "@/modules/shared/ui/components/add-to-collection/AddToCollection";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { PlatformIcons } from "@/modules/game/data/platformIcons";
 import formatDate from "@/utils/formatDate";
@@ -147,14 +147,17 @@ export default function GamePage({ params }: { params: Promise<GamePageParams> }
                   }}>
                   {wish ? <PiMagicWandFill className="text-lime-500" /> : <PiMagicWand />}
                 </div>
-                <div
-                  className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] text-white hover:border"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setSave((prevState) => !prevState);
-                  }}>
-                  {save ? <RiBookmarkFill className="text-sky-500" /> : <MdOutlineBookmarkAdd className="text-xl" />}
-                </div>
+                <Dialog>
+                  <DialogTrigger asChild>
+                    <div onClick={(e) => e.stopPropagation()} role="button" tabIndex={0} data-testid="save-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border">
+                      {save ? <RiBookmarkFill data-testid="savedGame" className="text-sky-500" /> : <MdOutlineBookmarkAdd data-testid="unsavedGame" className="text-xl text-white" />}
+                    </div>
+                  </DialogTrigger>
+                    <DialogContent>
+                      <DialogTitle className="sr-only" />
+                      <AddToCollection />
+                    </DialogContent>
+                </Dialog>
               </div>
             </div>
           </div>

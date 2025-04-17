@@ -2,6 +2,7 @@
 
 import Search from "../search/Search";
 import MenuItems from "../sidebar/MenuItems";
+import ThemeAndProfile from "./ThemeAndProfile";
 import useStore from "@/store/store";
 import Link from "next/link";
 import { useRef, useState } from "react";
@@ -45,6 +46,7 @@ export default function Header() {
             <Search />
           </div>
         </div>
+        <ThemeAndProfile />
       </div>
 
       {isMobMenuOpen && (
