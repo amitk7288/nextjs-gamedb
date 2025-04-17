@@ -6,6 +6,8 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { GameCardProps } from "@/modules/game/types/GameCard.type";
 import { PlatformIcons } from "@/modules/game/data/platformIcons";
+import AddToCollection from "@/modules/shared/ui/components/add-to-collection/AddToCollection";
+import { Dialog, DialogContent, DialogTrigger, DialogTitle } from "@/modules/shared/ui/components/shadcn-comps/dialog";
 import { RiHeart3Line, RiHeart3Fill, RiBookmarkFill, RiStarFill } from "react-icons/ri";
 import { PiMagicWand, PiMagicWandFill } from "react-icons/pi";
 import { MdOutlineBookmarkAdd } from "react-icons/md";
@@ -50,15 +52,17 @@ function GameCard({ title, img, rating, genre, parentPlatforms, id }: GameCardPr
               }}>
               {wish ? <PiMagicWandFill data-testid="wishedGame" className="text-lime-500" /> : <PiMagicWand data-testid="unwishedGame" />}
             </button>
-            <button
-              data-testid="save-button"
-              className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border"
-              onClick={(e) => {
-                e.stopPropagation();
-                setSave((prevState) => !prevState);
-              }}>
-              {save ? <RiBookmarkFill data-testid="savedGame" className="text-sky-500" /> : <MdOutlineBookmarkAdd data-testid="unsavedGame" className="text-xl" />}
-            </button>
+            <Dialog>
+              <DialogTrigger asChild>
+                <div onClick={(e) => e.stopPropagation()} role="button" tabIndex={0} data-testid="save-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border">
+                  {save ? <RiBookmarkFill data-testid="savedGame" className="text-sky-500" /> : <MdOutlineBookmarkAdd data-testid="unsavedGame" className="text-xl" />}
+                </div>
+              </DialogTrigger>
+                <DialogContent>
+                  <DialogTitle className="sr-only" />
+                  <AddToCollection />
+                </DialogContent>
+            </Dialog>
           </div>
         </div>
 
@@ -86,21 +90,7 @@ function GameCard({ title, img, rating, genre, parentPlatforms, id }: GameCardPr
               {parentPlatforms?.map((p) => {
                 const platformIcon = PlatformIcons[p.platform.name];
 
-                return platformIcon ? (
-                  <li key={p.platform.id}>
-                    {typeof platformIcon === "function" ? (
-                      React.createElement(platformIcon, { className: "text-[16px]" })
-                    ) : (
-                      <Image
-                        src={platformIcon as string}
-                        alt={p.platform.name}
-                        width={20}
-                        height={20}
-                        className="w-[20px]"
-                      />
-                    )}
-                  </li>
-                ) : null;
+                return platformIcon ? <li key={p.platform.id}>{typeof platformIcon === "function" ? React.createElement(platformIcon, { className: "text-[16px]" }) : <Image src={platformIcon as string} alt={p.platform.name} width={20} height={20} className="w-[20px]" />}</li> : null;
               })}
             </ul>
           </div>

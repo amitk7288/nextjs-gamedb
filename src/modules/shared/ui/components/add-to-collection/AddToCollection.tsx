@@ -1,15 +1,11 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef } from "react";
 import { PiPlusBold } from "react-icons/pi";
-import { RiBookmarkFill } from "react-icons/ri";
-import { MdOutlineBookmarkAdd } from "react-icons/md";
-//import { createNewCollection, updateCollection } from "../../../features/collections/collectionsSlice";
-//import { useDispatch, useSelector } from "react-redux";
+// import { RiBookmarkFill } from "react-icons/ri";
+// import { MdOutlineBookmarkAdd } from "react-icons/md";
 
-export default function AddToCollection({ onClose, gameObj, notify }) {
-  //const dispatch = useDispatch();
-  //const collections = useSelector((state) => state.collections);
+export default function AddToCollection() {
 
   const [newCollectionValue, setNewCollectionValue] = useState<string | number>("");
   const [newCollectionField, setNewCollectionField] = useState(false);
@@ -29,7 +25,6 @@ export default function AddToCollection({ onClose, gameObj, notify }) {
     setNewCollectionValue(e.target.value);
   }
 
-  // function handleAddCollectionSubmit(e) {
   //   e.preventDefault();
 
   //   const newCollection = {
@@ -89,20 +84,20 @@ export default function AddToCollection({ onClose, gameObj, notify }) {
   //   onClose();
   // };
 
-  useEffect(() => {
-    if (newCollectionField && inputRef.current) {
-      inputRef.current.focus();
-    }
-  }, [newCollectionField]);
+  // useEffect(() => {
+  //   if (newCollectionField && inputRef.current) {
+  //     inputRef.current.focus();
+  //   }
+  // }, [newCollectionField]);
 
   return (
     <div className="flex flex-col">
       <div className="flex-1 px-4 pb-0 pt-0">
-        <form onSubmit={handleAddCollectionSubmit}>
+        <form>
           <p className="xs:text-2xl text-xl font-medium">Save game to...</p>
           <div className="mt-2 flex flex-col gap-5">
             <div>
-              {collections.length !== 0
+              {/* {collections.length !== 0
                 ? collections.map((c) => (
                     <div key={c.id} className="flex items-center gap-2">
                       <label htmlFor={`task-${c.id}`} className="flex items-center gap-2">
@@ -111,7 +106,8 @@ export default function AddToCollection({ onClose, gameObj, notify }) {
                       </label>
                     </div>
                   ))
-                : null}
+                : null} */}
+                <p>collection list</p>
             </div>
             <div id="new_collection">
               {newCollectionField ? (
