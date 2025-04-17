@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation";
 import useStore from "@/store/store";
 import cleanupSlug from "@/utils/slugify";
 
-export default function Search() {
+export default function Search({ isMobile }: { isMobile: boolean }) {
   const [searchQuery, setSearchQuery] = useState<string>("");
 
   const isSearchOpen = useStore((state) => state.isSearchOpen);
@@ -18,7 +18,7 @@ export default function Search() {
     if (isSearchOpen && searchInputRef?.current) {
       searchInputRef.current.focus();
     } else if (!isSearchOpen) {
-      setSearchQuery("")
+      setSearchQuery("");
     }
   }, [isSearchOpen]);
 
@@ -33,7 +33,7 @@ export default function Search() {
   }
 
   return (
-    <div className={`${!isSearchOpen ? `hidden` : `flex lg:hidden`} dark:bg-drkbg2 dark:text-drkcol relative h-[40px] w-full items-center gap-2 rounded-md bg-[#f7f7f7] px-5 py-2.5 lg:flex`}>
+    <div className={`${isMobile ? (!isSearchOpen ? "hidden lg:flex" : "flex lg:hidden") : "hidden lg:flex"} dark:bg-drkbg2 dark:text-drkcol relative h-[40px] w-full items-center gap-2 rounded-md bg-[#f7f7f7] px-5 py-2.5`}>
       <PiMagnifyingGlassBold className="text-lg" />
       <form onSubmit={(e) => handleSearchSubmit(e)} className="w-[100%]">
         <input data-cy="search-field" className="dark:text-drkcol w-[100%] border-none bg-[transparent] p-0 text-sm font-medium text-black outline-none focus:ring-0 xl:text-base" type="search" name="searchgames" id="searchgames" placeholder="Search 874, 833 games..." value={searchQuery} onChange={(e) => setSearchQuery(e.target.value)} ref={searchInputRef} />
