@@ -12,19 +12,29 @@ import { RiHeart3Line, RiHeart3Fill, RiBookmarkFill, RiStarFill } from "react-ic
 import { PiMagicWand, PiMagicWandFill } from "react-icons/pi";
 import { MdOutlineBookmarkAdd } from "react-icons/md";
 import cleanupSlug from "@/utils/slugify";
-
+import { useAuth, useClerk } from "@clerk/nextjs";
 
 function GameCard({ title, img, rating, genre, parentPlatforms, id }: GameCardProps) {
-   const [fav, setFav] = useState<boolean>(false);
-   const [wish, setWish] = useState<boolean>(false);
-   const [save, setSave] = useState<boolean>(false);
+  const [fav, setFav] = useState<boolean>(false);
+  const [wish, setWish] = useState<boolean>(false);
+  const [save, setSave] = useState<boolean>(false);
 
-   const router = useRouter();
+  const router = useRouter();
 
-   const handleNavigate = () => {
+  const clerk = useClerk();
+  const { isSignedIn, userId } = useAuth();
+
+  const handleNavigate = () => {
     const slug = cleanupSlug(title);
     router.push(`/game/${id}/${slug}`);
-   }
+  };
+
+  const handleFavClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (!isSignedIn) {
+      return clerk.openSignIn();
+    }
+  };
 
   return (
     <div data-testid="gamecard" className="h-[100%] cursor-pointer" onClick={handleNavigate}>
@@ -34,13 +44,7 @@ function GameCard({ title, img, rating, genre, parentPlatforms, id }: GameCardPr
           <Image src={img} width={420} height={200} alt="game title" className="h-full w-[420px] object-cover" />
           {/* Icon Buttons */}
           <div className="absolute bottom-[10px] right-[10px] flex gap-[10px]">
-            <button
-              data-testid="fav-button"
-              className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border"
-              onClick={(e) => {
-                e.stopPropagation();
-                setFav((prevState) => !prevState);
-              }}>
+            <button data-testid="fav-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border" onClick={handleFavClick}>
               {fav ? <RiHeart3Fill data-testid="favedGame" className="text-red-500" /> : <RiHeart3Line data-testid="unfavedGame" />}
             </button>
             <button
@@ -58,10 +62,10 @@ function GameCard({ title, img, rating, genre, parentPlatforms, id }: GameCardPr
                   {save ? <RiBookmarkFill data-testid="savedGame" className="text-sky-500" /> : <MdOutlineBookmarkAdd data-testid="unsavedGame" className="text-xl" />}
                 </div>
               </DialogTrigger>
-                <DialogContent>
-                  <DialogTitle className="sr-only" />
-                  <AddToCollection />
-                </DialogContent>
+              <DialogContent>
+                <DialogTitle className="sr-only" />
+                <AddToCollection />
+              </DialogContent>
             </Dialog>
           </div>
         </div>
@@ -100,4 +104,4 @@ function GameCard({ title, img, rating, genre, parentPlatforms, id }: GameCardPr
   );
 }
 
-export default GameCard
+export default GameCard;

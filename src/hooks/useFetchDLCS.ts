@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchDLCS } from "@/api/games";
+import { fetchDLCS } from "@/app/api/games";
 import { FetchGameProps } from "@/modules/game/types/FetchGame.type";
 import { useQuery } from "@tanstack/react-query";
 

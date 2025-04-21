@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { fetchGenres } from "@/api/genres";
+import { fetchGenres } from "@/app/api/genres";
 
 export function useFetchGenres() {
   return useQuery({

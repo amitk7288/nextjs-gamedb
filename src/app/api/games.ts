@@ -7,9 +7,9 @@ export async function fetchGames({ genreId, page = 1, pageSize = 40 }: FetchGame
   const allGames = [];
   let currentPage = page;
 
-  while(allGames.length < pageSize) {
+  while (allGames.length < pageSize) {
     const res = await fetch(`${base_url}/games?key=${api_key}&page=${currentPage}&page_size=${pageSize}&genres=${genreId}`);
-    
+
     if (!res.ok) {
       throw new Error(`Failed to fetch games: ${res.statusText}`);
     }
@@ -25,40 +25,39 @@ export async function fetchGames({ genreId, page = 1, pageSize = 40 }: FetchGame
   }
 
   return allGames.slice(0, pageSize);
-
 }
 
-export async function fetchGamesByTitle({search}: {search: string}) {
+export async function fetchGamesByTitle({ search }: { search: string }) {
   const res = await fetch(`${base_url}/games?key=${api_key}&search=${search}`);
   const data = await res.json();
   return data;
 }
 
-export async function fetchGameById({gameId}: FetchGameProps) {
+export async function fetchGameById({ gameId }: FetchGameProps) {
   const res = await fetch(`${base_url}/games/${gameId}?key=${api_key}`);
   const data = res.json();
   return data;
 }
 
-export async function fetchAchievements({ gameId, page}: FetchGameProps) {
+export async function fetchAchievements({ gameId, page }: FetchGameProps) {
   const res = await fetch(`${base_url}/games/${gameId}/achievements?key=${api_key}&page=${page}`);
   const data = await res.json();
   return data;
 }
 
-export async function fetchScreenshots({gameId}: FetchGameProps) {
-   const res = await fetch(`${base_url}/games/${gameId}/screenshots?key=${api_key}`);
-   const data = await res.json();
-   return data;
+export async function fetchScreenshots({ gameId }: FetchGameProps) {
+  const res = await fetch(`${base_url}/games/${gameId}/screenshots?key=${api_key}`);
+  const data = await res.json();
+  return data;
 }
 
-export async function fetchDLCS({gameId}: FetchGameProps) {
+export async function fetchDLCS({ gameId }: FetchGameProps) {
   const res = await fetch(`${base_url}/games/${gameId}/additions?key=${api_key}`);
   const data = await res.json();
   return data;
 }
 
-export async function fetchRelated({gameId}: FetchGameProps) {
+export async function fetchRelated({ gameId }: FetchGameProps) {
   const res = await fetch(`${base_url}/games/${gameId}/game-series?key=${api_key}`);
   const data = await res.json();
   return data;

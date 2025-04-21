@@ -1,6 +1,6 @@
 "use client";
 
-import { fetchScreenshots } from "@/api/games";
+import { fetchScreenshots } from "@/app/api/games";
 import { FetchGameProps } from "@/modules/game/types/FetchGame.type";
 import { useQuery } from "@tanstack/react-query";
 
