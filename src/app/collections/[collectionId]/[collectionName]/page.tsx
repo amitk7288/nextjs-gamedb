@@ -1,6 +1,6 @@
 "use client";
 import CardGridPage from "@/modules/shared/ui/components/card-grid-page/CardGridPage";
-import GameCard from "@/modules/game/ui/components/gamecard/GameCard";
+//import GameCard from "@/modules/game/ui/components/gamecard/GameCard";
 import { useParams } from "next/navigation";
 import { PiSquaresFourDuotone } from "react-icons/pi";
 

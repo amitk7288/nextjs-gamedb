@@ -9,6 +9,7 @@ const menuItems: MenuItemProps[] = [
     iconText: "Genres",
     path: "/genres",
     active: false,
+    auth: false,
   },
   {
     id: 2,
@@ -17,6 +18,7 @@ const menuItems: MenuItemProps[] = [
     iconText: "Library",
     path: "/library",
     active: false,
+    auth: true,
   },
   {
     id: 4,
@@ -25,6 +27,7 @@ const menuItems: MenuItemProps[] = [
     iconText: "Friends",
     path: "/friends",
     active: false,
+    auth: false,
   },
   {
     id: 6,
@@ -33,6 +36,7 @@ const menuItems: MenuItemProps[] = [
     iconText: "Favourites",
     path: "/favourites",
     active: false,
+    auth: true,
   },
   {
     id: 7,
@@ -41,6 +45,7 @@ const menuItems: MenuItemProps[] = [
     iconText: "Wishlist",
     path: "/wishlist",
     active: false,
+    auth: true,
   },
   {
     id: 8,
@@ -49,6 +54,7 @@ const menuItems: MenuItemProps[] = [
     iconText: "Collections",
     path: "/collections",
     active: false,
+    auth: true,
   },
 ];
 

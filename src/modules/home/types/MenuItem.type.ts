@@ -7,4 +7,5 @@ export interface MenuItemProps {
   iconText: string;
   path: string;
   active: boolean;
+  auth: boolean;
 }

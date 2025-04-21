@@ -1,7 +1,7 @@
 "use client";
 
 import { useInfiniteQuery } from "@tanstack/react-query";
-import { fetchAchievements } from "@/api/games";
+import { fetchAchievements } from "@/app/api/games";
 import { FetchGameProps } from "@/modules/game/types/FetchGame.type";
 import { AchievementResponse } from "@/modules/game/types/AchievementRes.type";
 
