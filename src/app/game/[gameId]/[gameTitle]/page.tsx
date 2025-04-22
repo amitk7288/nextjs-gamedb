@@ -13,13 +13,14 @@ import { PlatformIcons } from "@/modules/game/data/platformIcons";
 import formatDate from "@/utils/formatDate";
 import truncateText from "@/utils/truncateText";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useFetchGame } from "@/hooks/useFetchGame";
 import { useFetchAchievements } from "@/hooks/useFetchAchievements";
 import { useFetchScreenshots } from "@/hooks/useFetchScreenshots";
 import { useFetchDLCS } from "@/hooks/useFetchDLCS";
 import { useFetchRelated } from "@/hooks/useFetchRelated";
-
+import { useAuth } from "@clerk/nextjs";
+import { useFavoritesStore } from "@/store/favStore";
 import { RiBookmarkFill, RiHeart3Fill, RiHeart3Line, RiStarFill } from "react-icons/ri";
 import { PiCalendarXDuotone, PiClockCountdownDuotone, PiCodeDuotone, PiGameControllerDuotone, PiMagicWand, PiMagicWandFill } from "react-icons/pi";
 import { MdOutlineBookmarkAdd, MdOutlineCategory, MdOutlineDownload, MdOutlineGamepad, MdOutlineImage, MdOutlineSwipe } from "react-icons/md";
@@ -34,10 +35,18 @@ interface GamePageParams {
 }
 
 export default function GamePage({ params }: { params: Promise<GamePageParams> }) {
+  const { userId, isSignedIn } = useAuth();
+
+  const { favIds, fetchFavorites, toggleFavorite } = useFavoritesStore();
+    useEffect(() => {
+      if (userId) {
+        fetchFavorites(String(userId));
+      }
+    }, [userId, fetchFavorites]);
+
   const resolvedParams = React.use(params);
   const {gameId} = resolvedParams;
   
-  const [fav, setFav] = useState<boolean>(false);
   const [wish, setWish] = useState<boolean>(false);
   const [save, setSave] = useState<boolean>(false);
   const [isReadMore, setIsReadMore] = useState<boolean>(false);
@@ -97,7 +106,10 @@ export default function GamePage({ params }: { params: Promise<GamePageParams> }
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error Loading: {gameError?.message || achievementsError?.message || screenshotsError?.message || dlcsError?.message || relatedError?.message}</p>;
 
-  // const handleAddFav = () => {};
+  const handleFavClick = (e: React.MouseEvent<HTMLDivElement>) => {
+      e.stopPropagation();
+      if (userId) toggleFavorite(String(userId), Number(gameId));
+  };
   // const handleAddWish = () => {};
   // const handleAddSave = () => {};
   // const handleReadMore = () => {};
@@ -133,11 +145,8 @@ export default function GamePage({ params }: { params: Promise<GamePageParams> }
               <div className="absolute bottom-[10px] right-[10px] flex gap-[10px]">
                 <div
                   className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] text-white hover:border"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setFav((prevState) => !prevState);
-                  }}>
-                  {fav ? <RiHeart3Fill className="text-red-500" /> : <RiHeart3Line />}
+                  onClick={handleFavClick}>
+                  {favIds.includes(Number(gameId)) && isSignedIn ? <RiHeart3Fill className="text-red-500" /> : <RiHeart3Line />}
                 </div>
                 <div
                   className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] text-white hover:border"
@@ -153,10 +162,10 @@ export default function GamePage({ params }: { params: Promise<GamePageParams> }
                       {save ? <RiBookmarkFill data-testid="savedGame" className="text-sky-500" /> : <MdOutlineBookmarkAdd data-testid="unsavedGame" className="text-xl text-white" />}
                     </div>
                   </DialogTrigger>
-                    <DialogContent>
-                      <DialogTitle className="sr-only" />
-                      <AddToCollection />
-                    </DialogContent>
+                  <DialogContent>
+                    <DialogTitle className="sr-only" />
+                    <AddToCollection />
+                  </DialogContent>
                 </Dialog>
               </div>
             </div>
@@ -300,7 +309,20 @@ export default function GamePage({ params }: { params: Promise<GamePageParams> }
                 };
               }[];
             }) => (
-              <GameCard key={i.id} id={i.id} img={i.background_image} title={i.name} rating={i.metacritic} genre={i.genres[0]?.name} slug={i.slug} parentPlatforms={i.parent_platforms} />
+              <GameCard
+                key={i.id}
+                id={i.id}
+                img={i.background_image}
+                title={i.name}
+                rating={i.metacritic}
+                genre={i.genres[0]?.name}
+                slug={i.slug}
+                parentPlatforms={i.parent_platforms}
+                isFav={favIds.includes(Number(i.id))}
+                onFavClick={(gameId: number) => {
+                  if (userId) toggleFavorite(String(userId), gameId);
+                }}
+              />
             )
           )}
         </CardGridSection>
@@ -324,7 +346,20 @@ export default function GamePage({ params }: { params: Promise<GamePageParams> }
                 };
               }[];
             }) => (
-              <GameCard key={i.id} id={i.id} img={i.background_image} title={i.name} rating={i.metacritic} genre={i.genres[0]?.name} slug={i.slug} parentPlatforms={i.parent_platforms} />
+              <GameCard
+                key={i.id}
+                id={i.id}
+                img={i.background_image}
+                title={i.name}
+                rating={i.metacritic}
+                genre={i.genres[0]?.name}
+                slug={i.slug}
+                parentPlatforms={i.parent_platforms}
+                isFav={favIds.includes(Number(i.id))}
+                onFavClick={(gameId: number) => {
+                  if (userId) toggleFavorite(String(userId), gameId);
+                }}
+              />
             )
           )}
         </CardGridSection>

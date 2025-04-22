@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
-
+import { useEffect } from "react";
+import { useAuth } from "@clerk/nextjs";
+import { useFavoritesStore } from "@/store/favStore";
 import GameCard from "@/modules/game/ui/components/gamecard/GameCard";
 import CardGridPage from "@/modules/shared/ui/components/card-grid-page/CardGridPage";
 import { useFetchGamesByTitle } from "@/hooks/useFetchGamesByTitle";
@@ -13,6 +15,14 @@ interface SearchTermParams {
 }
 
 export default function SearchTerm({ params }: { params: Promise<SearchTermParams> }) {
+  const { userId } = useAuth();
+
+  const { favIds, fetchFavorites, toggleFavorite } = useFavoritesStore();
+  useEffect(() => {
+    if (userId) {
+      fetchFavorites(String(userId));
+    }
+  }, [userId, fetchFavorites]);
   const resolvedParams = React.use(params);
   const { searchTerm } = resolvedParams;
 
@@ -43,7 +53,20 @@ export default function SearchTerm({ params }: { params: Promise<SearchTermParam
               };
             }[];
           }) => (
-            <GameCard key={game.id} id={game.id} img={game.background_image} title={game.name} rating={game.metacritic} genre={game.genres[0]?.name} slug={game.slug} parentPlatforms={game.parent_platforms} />
+            <GameCard
+              key={game.id}
+              id={game.id}
+              img={game.background_image}
+              title={game.name}
+              rating={game.metacritic}
+              genre={game.genres[0]?.name}
+              slug={game.slug}
+              parentPlatforms={game.parent_platforms}
+              isFav={favIds.includes(game.id)}
+              onFavClick={(gameId: number) => {
+                if (userId) toggleFavorite(String(userId), gameId);
+              }}
+            />
           )
         )}
       </CardGridPage>
