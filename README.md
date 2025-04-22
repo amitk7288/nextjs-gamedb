@@ -1,5 +1,5 @@
 🎮 GameDB: A Next.js App Powered by RAWG API and Prisma
-Welcome to the Next JS GameDB, a powerful and scalable web application built using Next.js and Prisma ORM, with data sourced from the RAWG API.
+Welcome to the Next JS GameDB, a powerful and scalable web application built using Next.js, Prisma ORM, and Clerk for authorisation, with data sourced from the RAWG API.
 
 🛠️ Getting Started
 Step 1: Install Dependencies
