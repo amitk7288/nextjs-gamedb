@@ -1,6 +1,5 @@
 generator client {
   provider = "prisma-client-js"
-  output   = "../src/generated/prisma"
 }
 
 datasource db {
@@ -9,22 +8,8 @@ datasource db {
 }
 
 model User {
-  id          String      @id @default(cuid())
-  email       String      @unique
-  password    String
-  createdAt   DateTime    @default(now())
-  updatedAt   DateTime    @updatedAt
-  favorites   Int[]
-  wishlist    Int[]
-  collections Collection[]
-}
-
-model Collection {
-  id        Int      @id @default(autoincrement())
-  name      String
-  userId    String
-  user      User     @relation(fields: [userId], references: [id])
-  gameIds   Int[]    
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  id          String   @id @default(cuid())
+  email       String   @unique
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }
