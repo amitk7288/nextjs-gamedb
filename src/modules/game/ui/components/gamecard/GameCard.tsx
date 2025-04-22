@@ -14,26 +14,31 @@ import { MdOutlineBookmarkAdd } from "react-icons/md";
 import cleanupSlug from "@/utils/slugify";
 import { useAuth, useClerk } from "@clerk/nextjs";
 
-function GameCard({ title, img, rating, genre, parentPlatforms, id }: GameCardProps) {
-  const [fav, setFav] = useState<boolean>(false);
+interface ExtendedGameCardProps extends GameCardProps {
+  isFav: boolean;
+  onFavClick: (gameId: number) => void;
+}
+
+function GameCard({ title, img, rating, genre, parentPlatforms, id, isFav, onFavClick }: ExtendedGameCardProps) {
   const [wish, setWish] = useState<boolean>(false);
   const [save, setSave] = useState<boolean>(false);
 
   const router = useRouter();
 
   const clerk = useClerk();
-  const { isSignedIn, userId } = useAuth();
+  const { isSignedIn } = useAuth();
 
   const handleNavigate = () => {
     const slug = cleanupSlug(title);
     router.push(`/game/${id}/${slug}`);
   };
 
-  const handleFavClick = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const handleFavClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     if (!isSignedIn) {
       return clerk.openSignIn();
     }
+    onFavClick(Number(id));
   };
 
   return (
@@ -45,7 +50,7 @@ function GameCard({ title, img, rating, genre, parentPlatforms, id }: GameCardPr
           {/* Icon Buttons */}
           <div className="absolute bottom-[10px] right-[10px] flex gap-[10px]">
             <button data-testid="fav-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border" onClick={handleFavClick}>
-              {fav ? <RiHeart3Fill data-testid="favedGame" className="text-red-500" /> : <RiHeart3Line data-testid="unfavedGame" />}
+              {isFav && isSignedIn ? <RiHeart3Fill data-testid="favedGame" className="text-red-500" /> : <RiHeart3Line data-testid="unfavedGame" />}
             </button>
             <button
               data-testid="wish-button"
