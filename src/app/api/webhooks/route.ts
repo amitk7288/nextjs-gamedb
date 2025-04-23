@@ -1,7 +1,7 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { createUser } from "@/lib/users";
+import { createUser, deleteUser, updateUser } from "@/lib/users";
 import { User } from "@prisma/client";
 
 export async function POST(req: Request) {
@@ -66,7 +66,33 @@ export async function POST(req: Request) {
       updatedAt: new Date(),
     };
 
-    await createUser(newUserPayload as User); 
+    await createUser(newUserPayload as User);
+  } else if (eventType === "user.updated") {
+    // When a user is updated, you might want to update their email (or other fields)
+    const { id, email_addresses } = evt.data;
+    if (!id) {
+      return new Response("Error occurred -- missing id", {
+        status: 400,
+      });
+    }
+
+    // Build an update payload. You can update additional fields as needed.
+    const updatedUserPayload = {
+      email: email_addresses ? email_addresses[0].email_address : undefined,
+      updatedAt: new Date(),
+    };
+
+    // Remove undefined fields before updating if needed
+    await updateUser(id, updatedUserPayload);
+  } else if (eventType === "user.deleted") {
+    // When the user isdeleted in Clerk, remove them from your DB.
+    const { id } = evt.data;
+    if (!id) {
+      return new Response("Error occurred -- missing id", {
+        status: 400,
+      });
+    }
+    await deleteUser(id);
   }
 
   return new Response("", { status: 200 });
