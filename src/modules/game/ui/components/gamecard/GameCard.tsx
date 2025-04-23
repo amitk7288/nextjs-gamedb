@@ -17,10 +17,11 @@ import { useAuth, useClerk } from "@clerk/nextjs";
 interface ExtendedGameCardProps extends GameCardProps {
   isFav: boolean;
   onFavClick: (gameId: number) => void;
+  isWish: boolean;
+  onWishClick: (gameId: number) => void;
 }
 
-function GameCard({ title, img, rating, genre, parentPlatforms, id, isFav, onFavClick }: ExtendedGameCardProps) {
-  const [wish, setWish] = useState<boolean>(false);
+function GameCard({ title, img, rating, genre, parentPlatforms, id, isFav, onFavClick, isWish, onWishClick }: ExtendedGameCardProps) {
   const [save, setSave] = useState<boolean>(false);
 
   const router = useRouter();
@@ -41,6 +42,14 @@ function GameCard({ title, img, rating, genre, parentPlatforms, id, isFav, onFav
     onFavClick(Number(id));
   };
 
+  const handleWishClick = async (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
+    if (!isSignedIn) {
+      return clerk.openSignIn();
+    }
+    onWishClick(Number(id));
+  };
+
   return (
     <div data-testid="gamecard" className="h-[100%] cursor-pointer" onClick={handleNavigate}>
       <div className="text-drkcol grid w-full grid-rows-[200px_auto] overflow-hidden rounded-[10px] bg-slate-800">
@@ -52,14 +61,8 @@ function GameCard({ title, img, rating, genre, parentPlatforms, id, isFav, onFav
             <button data-testid="fav-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border" onClick={handleFavClick}>
               {isFav && isSignedIn ? <RiHeart3Fill data-testid="favedGame" className="text-red-500" /> : <RiHeart3Line data-testid="unfavedGame" />}
             </button>
-            <button
-              data-testid="wish-button"
-              className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border"
-              onClick={(e) => {
-                e.stopPropagation();
-                setWish((prevState) => !prevState);
-              }}>
-              {wish ? <PiMagicWandFill data-testid="wishedGame" className="text-lime-500" /> : <PiMagicWand data-testid="unwishedGame" />}
+            <button data-testid="wish-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border" onClick={handleWishClick}>
+              {isWish && isSignedIn ? <PiMagicWandFill data-testid="wishedGame" className="text-lime-500" /> : <PiMagicWand data-testid="unwishedGame" />}
             </button>
             <Dialog>
               <DialogTrigger asChild>

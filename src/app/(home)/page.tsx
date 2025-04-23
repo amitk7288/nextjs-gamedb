@@ -10,6 +10,7 @@ import { PiSwordBold } from "react-icons/pi";
 import { GiPistolGun } from "react-icons/gi";
 import { MdGamepad } from "react-icons/md";
 import { useFavoritesStore } from "@/store/favStore";
+import { useWishStore } from "@/store/wishStore";
 
 export default function Home() {
  const { userId } = useAuth();
@@ -20,6 +21,13 @@ export default function Home() {
        fetchFavorites(String(userId));
      }
    }, [userId, fetchFavorites]);
+
+ const { wishIds, fetchWishes, toggleWishes } = useWishStore();
+   useEffect(() => {
+     if (userId) {
+       fetchWishes(String(userId));
+     }
+   }, [userId, fetchWishes]);
   
   const {
     data: actionGames,
@@ -77,6 +85,10 @@ if (isError) return <p>Error Loading Games: {actionError?.message || rpgError?.m
             onFavClick={(gameId: number) => {
               if (userId) toggleFavorite(String(userId), gameId);
             }}
+            isWish={wishIds.includes(game.id)}
+            onWishClick={(gameId: number) => {
+              if (userId) toggleWishes(String(userId), gameId);
+            }}
           />
         ))}
       </CardGridSection>
@@ -96,6 +108,10 @@ if (isError) return <p>Error Loading Games: {actionError?.message || rpgError?.m
             onFavClick={(gameId: number) => {
               if (userId) toggleFavorite(String(userId), gameId);
             }}
+            isWish={wishIds.includes(game.id)}
+            onWishClick={(gameId: number) => {
+              if (userId) toggleWishes(String(userId), gameId);
+            }}
           />
         ))}
       </CardGridSection>
@@ -114,6 +130,10 @@ if (isError) return <p>Error Loading Games: {actionError?.message || rpgError?.m
             isFav={favIds.includes(game.id)}
             onFavClick={(gameId: number) => {
               if (userId) toggleFavorite(String(userId), gameId);
+            }}
+            isWish={wishIds.includes(game.id)}
+            onWishClick={(gameId: number) => {
+              if (userId) toggleWishes(String(userId), gameId);
             }}
           />
         ))}
