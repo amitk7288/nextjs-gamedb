@@ -21,6 +21,8 @@ import { useFetchDLCS } from "@/hooks/useFetchDLCS";
 import { useFetchRelated } from "@/hooks/useFetchRelated";
 import { useAuth } from "@clerk/nextjs";
 import { useFavoritesStore } from "@/store/favStore";
+import { useWishStore } from "@/store/wishStore";
+import { useCollectionsStore } from "@/store/collectionStore";
 import { RiBookmarkFill, RiHeart3Fill, RiHeart3Line, RiStarFill } from "react-icons/ri";
 import { PiCalendarXDuotone, PiClockCountdownDuotone, PiCodeDuotone, PiGameControllerDuotone, PiMagicWand, PiMagicWandFill } from "react-icons/pi";
 import { MdOutlineBookmarkAdd, MdOutlineCategory, MdOutlineDownload, MdOutlineGamepad, MdOutlineImage, MdOutlineSwipe } from "react-icons/md";
@@ -35,7 +37,13 @@ interface GamePageParams {
 }
 
 export default function GamePage({ params }: { params: Promise<GamePageParams> }) {
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSave, setIsSave] = useState(false);
   const { userId, isSignedIn } = useAuth();
+  const {checkGameInCollections} = useCollectionsStore();
+  const [isReadMore, setIsReadMore] = useState<boolean>(false);
+  const resolvedParams = React.use(params);
+  const { gameId } = resolvedParams;
 
   const { favIds, fetchFavorites, toggleFavorite } = useFavoritesStore();
     useEffect(() => {
@@ -44,13 +52,26 @@ export default function GamePage({ params }: { params: Promise<GamePageParams> }
       }
     }, [userId, fetchFavorites]);
 
-  const resolvedParams = React.use(params);
-  const {gameId} = resolvedParams;
+  const { wishIds, fetchWishes, toggleWishes } = useWishStore();
+    useEffect(() => {
+      if (userId) {
+        fetchWishes(String(userId));
+      }
+    }, [userId, fetchWishes]);
+
   
-  const [wish, setWish] = useState<boolean>(false);
-  const [save, setSave] = useState<boolean>(false);
-  const [isReadMore, setIsReadMore] = useState<boolean>(false);
-  
+  useEffect(() => {
+    async function isGameSavedInCollection() {
+      if (userId) {
+        const savedData = await checkGameInCollections(String(userId), Number(gameId));
+        setIsSave(savedData.isGameInAnyCollection);
+      } else {
+        setIsSave(false);
+      }
+    }
+    isGameSavedInCollection();
+  }, [checkGameInCollections, gameId, userId]);
+
   const {
     data: game,
     isLoading: isGameLoading,
@@ -98,8 +119,6 @@ export default function GamePage({ params }: { params: Promise<GamePageParams> }
     gameId: gameId,
   });
 
-  console.dir(game);
-
   const isLoading = isGameLoading || areAchievementsLoading || areScreenshotsLoading || areDLCSLoading || areRelatedLoading;
   const isError = isGameError || isAchievementsError || isScreenshotsError || isDLCSError || isRelatedLError;
 
@@ -110,9 +129,11 @@ export default function GamePage({ params }: { params: Promise<GamePageParams> }
       e.stopPropagation();
       if (userId) toggleFavorite(String(userId), Number(gameId));
   };
-  // const handleAddWish = () => {};
-  // const handleAddSave = () => {};
-  // const handleReadMore = () => {};
+
+  const handleWishClick = (e: React.MouseEvent<HTMLDivElement>) => {
+    e.stopPropagation();
+    if (userId) toggleWishes(String(userId), Number(gameId));
+  };
 
   const truncatedDesc = truncateText(game?.description_raw, 300);
   const truncatedDescXL = truncateText(game?.description_raw, 800);
@@ -143,28 +164,21 @@ export default function GamePage({ params }: { params: Promise<GamePageParams> }
               </div>
               {/* Icon Buttons */}
               <div className="absolute bottom-[10px] right-[10px] flex gap-[10px]">
-                <div
-                  className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] text-white hover:border"
-                  onClick={handleFavClick}>
+                <div className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] text-white hover:border" onClick={handleFavClick}>
                   {favIds.includes(Number(gameId)) && isSignedIn ? <RiHeart3Fill className="text-red-500" /> : <RiHeart3Line />}
                 </div>
-                <div
-                  className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] text-white hover:border"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    setWish((prevState) => !prevState);
-                  }}>
-                  {wish ? <PiMagicWandFill className="text-lime-500" /> : <PiMagicWand />}
+                <div className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] text-white hover:border" onClick={handleWishClick}>
+                  {wishIds.includes(Number(gameId)) && isSignedIn ? <PiMagicWandFill className="text-lime-500" /> : <PiMagicWand />}
                 </div>
-                <Dialog>
+                <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
                   <DialogTrigger asChild>
                     <div onClick={(e) => e.stopPropagation()} role="button" tabIndex={0} data-testid="save-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border">
-                      {save ? <RiBookmarkFill data-testid="savedGame" className="text-sky-500" /> : <MdOutlineBookmarkAdd data-testid="unsavedGame" className="text-xl text-white" />}
+                      {isSave && isSignedIn ? <RiBookmarkFill data-testid="savedGame" className="text-sky-500" /> : <MdOutlineBookmarkAdd data-testid="unsavedGame" className="text-xl text-white" />}
                     </div>
                   </DialogTrigger>
                   <DialogContent>
                     <DialogTitle className="sr-only" />
-                    <AddToCollection />
+                    <AddToCollection gameId={Number(gameId)} setIsDialogOpen={setIsDialogOpen} />
                   </DialogContent>
                 </Dialog>
               </div>
@@ -322,6 +336,10 @@ export default function GamePage({ params }: { params: Promise<GamePageParams> }
                 onFavClick={(gameId: number) => {
                   if (userId) toggleFavorite(String(userId), gameId);
                 }}
+                isWish={wishIds.includes(Number(i.id))}
+                onWishClick={(gameId: number) => {
+                  if (userId) toggleWishes(String(userId), gameId);
+                }}
               />
             )
           )}
@@ -359,32 +377,15 @@ export default function GamePage({ params }: { params: Promise<GamePageParams> }
                 onFavClick={(gameId: number) => {
                   if (userId) toggleFavorite(String(userId), gameId);
                 }}
+                isWish={wishIds.includes(Number(i.id))}
+                onWishClick={(gameId: number) => {
+                  if (userId) toggleWishes(String(userId), gameId);
+                }}
               />
             )
           )}
         </CardGridSection>
       ) : null}
-
-      {/* {isOpen && !showAllAchievements ? (
-        <Modal closeModal={() => setIsOpen(false)}>
-          <AddToCollection onClose={() => setIsOpen(false)} gameObj={game} notify={notify} />
-        </Modal>
-      ) : null}
-
-      {isOpen && showAllAchievements ? (
-        <Modal closeModal={closeAchievementModal}>
-          <div className="flex flex-col gap-2">
-            <p className="xs:text-2xl text-xl font-medium dark:text-white">All Achievements</p>
-            <InfiniteScroll dataLength={achievementsResults.length || 0} next={getMoreAchievements} hasMore={hasMore} loader={<p className="text-center">Loading...</p>} height={400} endMessage={<p className="mt-3 text-center font-light">That&apos;s the lot!</p>}>
-              <div className="grid grid-cols-1 gap-3 overflow-y-auto sm:grid-cols-2">
-                {achievementsResults.map((a) => (
-                  <Achievement key={a.id} img={a.image} name={a.name} progress={a.percent} desc={a.description} />
-                ))}
-              </div>
-            </InfiniteScroll>
-          </div>
-        </Modal>
-      ) : null} */}
     </div>
   );
 }

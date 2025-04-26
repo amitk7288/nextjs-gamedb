@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -13,6 +13,7 @@ import { PiMagicWand, PiMagicWandFill } from "react-icons/pi";
 import { MdOutlineBookmarkAdd } from "react-icons/md";
 import cleanupSlug from "@/utils/slugify";
 import { useAuth, useClerk } from "@clerk/nextjs";
+import { useCollectionsStore } from "@/store/collectionStore";
 
 interface ExtendedGameCardProps extends GameCardProps {
   isFav: boolean;
@@ -22,7 +23,23 @@ interface ExtendedGameCardProps extends GameCardProps {
 }
 
 function GameCard({ title, img, rating, genre, parentPlatforms, id, isFav, onFavClick, isWish, onWishClick }: ExtendedGameCardProps) {
-  const [save, setSave] = useState<boolean>(false);
+  const { userId } = useAuth();
+  const { checkGameInCollections } = useCollectionsStore();
+
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [isSave, setIsSave] = useState(false);
+
+  useEffect(() => {
+    async function isGameSavedInCollection() {
+      if (userId) {
+        const savedData = await checkGameInCollections(String(userId), Number(id));
+        setIsSave(savedData.isGameInAnyCollection);
+      } else {
+        setIsSave(false);
+      }
+    }
+    isGameSavedInCollection();
+  }, [checkGameInCollections, id, userId, isDialogOpen]);
 
   const router = useRouter();
 
@@ -50,12 +67,19 @@ function GameCard({ title, img, rating, genre, parentPlatforms, id, isFav, onFav
     onWishClick(Number(id));
   };
 
+  const handleSaveClick = async (event: React.MouseEvent<HTMLDivElement>) => {
+    event.stopPropagation();
+    if (!isSignedIn) {
+      return clerk.openSignIn();
+    }
+  };
+
   return (
     <div data-testid="gamecard" className="h-[100%] cursor-pointer" onClick={handleNavigate}>
       <div className="text-drkcol grid w-full grid-rows-[200px_auto] overflow-hidden rounded-[10px] bg-slate-800">
         {/* Image Section */}
         <div className="relative flex h-full w-full cursor-pointer items-center justify-center overflow-hidden">
-          <Image src={img} width={420} height={200} alt="game title" className="h-full w-[420px] object-cover" />
+          {img && <Image src={img} width={420} height={200} alt="game title" className="h-full w-[420px] object-cover" />}
           {/* Icon Buttons */}
           <div className="absolute bottom-[10px] right-[10px] flex gap-[10px]">
             <button data-testid="fav-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border" onClick={handleFavClick}>
@@ -64,15 +88,15 @@ function GameCard({ title, img, rating, genre, parentPlatforms, id, isFav, onFav
             <button data-testid="wish-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border" onClick={handleWishClick}>
               {isWish && isSignedIn ? <PiMagicWandFill data-testid="wishedGame" className="text-lime-500" /> : <PiMagicWand data-testid="unwishedGame" />}
             </button>
-            <Dialog>
+            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
               <DialogTrigger asChild>
-                <div onClick={(e) => e.stopPropagation()} role="button" tabIndex={0} data-testid="save-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border">
-                  {save ? <RiBookmarkFill data-testid="savedGame" className="text-sky-500" /> : <MdOutlineBookmarkAdd data-testid="unsavedGame" className="text-xl" />}
+                <div onClick={handleSaveClick} role="button" tabIndex={0} data-testid="save-button" className="flex h-[30px] w-[30px] cursor-pointer items-center justify-center rounded-[8px] bg-[#252f3f] text-[18px] hover:border">
+                  {isSave && isSignedIn ? <RiBookmarkFill data-testid="savedGame" className="text-sky-500" /> : <MdOutlineBookmarkAdd data-testid="unsavedGame" className="text-xl" />}
                 </div>
               </DialogTrigger>
               <DialogContent>
                 <DialogTitle className="sr-only" />
-                <AddToCollection />
+                <AddToCollection gameId={Number(id)} setIsDialogOpen={setIsDialogOpen} />
               </DialogContent>
             </Dialog>
           </div>

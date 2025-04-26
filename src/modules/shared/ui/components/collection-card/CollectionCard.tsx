@@ -1,6 +1,5 @@
 "use client";
 
-import { useState } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import game from "../../../../../../public/hogwarts-legacy.webp";
@@ -18,19 +17,12 @@ interface CollectionCardProps {
 }
 
 export default function CollectionCard({ title, numGames, id }: CollectionCardProps) {
-  const [isOpen, setIsOpen] = useState(false);
   const router = useRouter();
-  console.log("Router object:", router);
 
   function handleNavigateClick() {
     const slug = cleanupSlug(title);
     router.push(`/collections/${id}/${slug}`);
   }
-  // function handleDeleteClick(event: React.MouseEvent<HTMLDivElement>) {
-  //   event.stopPropagation();
-  //   console.log("clicked!!");
-  //   setIsOpen(true);
-  // }
 
   return (
     <>
@@ -44,13 +36,13 @@ export default function CollectionCard({ title, numGames, id }: CollectionCardPr
             </DialogTrigger>
             <DialogContent>
               <DialogTitle className="sr-only" />
-              <ConfirmDelete onClose={() => setIsOpen(false)} collectionId={id} />
+              <ConfirmDelete collectionId={id} />
             </DialogContent>
           </Dialog>
           <div className="mt-10 flex flex-col items-center gap-5">
             <p className="text-center text-2xl font-semibold text-white underline">{title}</p>
             <div>
-              <p className="text-lg">{numGames === 1 ? `${numGames} game` : `${numGames} games`}</p>
+              {numGames !== 0 ? (<p className="text-lg">{numGames === 1 ? `${numGames} game` : `${numGames} games`}</p>): <p>No games</p>}
             </div>
           </div>
           <div className="">
@@ -68,11 +60,6 @@ export default function CollectionCard({ title, numGames, id }: CollectionCardPr
           </div>
         </div>
       </div>
-      {/* {isOpen && (
-        <Modal closeModal={() => setIsOpen(false)}>
-          <ConfirmDelete onClose={() => setIsOpen(false)} collectionId={id} />
-        </Modal>
-      )} */}
     </>
   );
 }

@@ -28,7 +28,7 @@ export async function POST(req: Request) {
   const payload = await req.json();
   const body = JSON.stringify(payload);
 
-  // Create a new Svix instance with your secret.
+  // Create a new Svix instance with the secret.
   const wh = new Webhook(SIGNING_SECRET);
 
   let evt: WebhookEvent;
@@ -68,7 +68,6 @@ export async function POST(req: Request) {
 
     await createUser(newUserPayload as User);
   } else if (eventType === "user.updated") {
-    // When a user is updated, you might want to update their email (or other fields)
     const { id, email_addresses } = evt.data;
     if (!id) {
       return new Response("Error occurred -- missing id", {
@@ -76,16 +75,12 @@ export async function POST(req: Request) {
       });
     }
 
-    // Build an update payload. You can update additional fields as needed.
     const updatedUserPayload = {
       email: email_addresses ? email_addresses[0].email_address : undefined,
       updatedAt: new Date(),
     };
-
-    // Remove undefined fields before updating if needed
     await updateUser(id, updatedUserPayload);
   } else if (eventType === "user.deleted") {
-    // When the user isdeleted in Clerk, remove them from your DB.
     const { id } = evt.data;
     if (!id) {
       return new Response("Error occurred -- missing id", {

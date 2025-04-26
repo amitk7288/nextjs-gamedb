@@ -23,7 +23,6 @@ export async function fetchGames({ genreId, page = 1, pageSize = 40 }: FetchGame
     allGames.push(...data.results);
     currentPage += 1;
   }
-
   return allGames.slice(0, pageSize);
 }
 
