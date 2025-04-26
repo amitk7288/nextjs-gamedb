@@ -4,6 +4,7 @@ import React from "react";
 import { useEffect } from "react";
 import { useAuth } from "@clerk/nextjs";
 import { useFavoritesStore } from "@/store/favStore";
+import { useWishStore } from "@/store/wishStore";
 import GameCard from "@/modules/game/ui/components/gamecard/GameCard";
 import CardGridPage from "@/modules/shared/ui/components/card-grid-page/CardGridPage";
 import { useFetchGamesByTitle } from "@/hooks/useFetchGamesByTitle";
@@ -16,6 +17,8 @@ interface SearchTermParams {
 
 export default function SearchTerm({ params }: { params: Promise<SearchTermParams> }) {
   const { userId } = useAuth();
+  const resolvedParams = React.use(params);
+  const { searchTerm } = resolvedParams;
 
   const { favIds, fetchFavorites, toggleFavorite } = useFavoritesStore();
   useEffect(() => {
@@ -23,8 +26,14 @@ export default function SearchTerm({ params }: { params: Promise<SearchTermParam
       fetchFavorites(String(userId));
     }
   }, [userId, fetchFavorites]);
-  const resolvedParams = React.use(params);
-  const { searchTerm } = resolvedParams;
+
+  const { wishIds, fetchWishes, toggleWishes } = useWishStore();
+  useEffect(() => {
+    if (userId) {
+      fetchWishes(String(userId));
+    }
+  }, [userId, fetchWishes]);
+
 
 
   const { data, isLoading, isError } = useFetchGamesByTitle({
@@ -65,6 +74,10 @@ export default function SearchTerm({ params }: { params: Promise<SearchTermParam
               isFav={favIds.includes(game.id)}
               onFavClick={(gameId: number) => {
                 if (userId) toggleFavorite(String(userId), gameId);
+              }}
+              isWish={wishIds.includes(game.id)}
+              onWishClick={(gameId: number) => {
+                if (userId) toggleWishes(String(userId), gameId);
               }}
             />
           )

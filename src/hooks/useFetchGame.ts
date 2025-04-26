@@ -6,7 +6,11 @@ import { useQuery } from "@tanstack/react-query";
 
 export function useFetchGame({ gameId }: FetchGameProps) {
   return useQuery({
-    queryKey: ["fetchGame", gameId],
-    queryFn: () => fetchGameById({ gameId }),
+    queryKey: ["fetchGame", gameId || null],
+    queryFn: () => {
+      if (!gameId) return Promise.resolve(null);
+      return fetchGameById({ gameId });
+    },
+    enabled: !!gameId,
   });
 }

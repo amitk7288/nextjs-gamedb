@@ -1,16 +1,23 @@
+"use client";
+
 import { GrCircleAlert } from "react-icons/gr";
+import { useCollectionsStore } from "@/store/collectionStore";
+import { useAuth } from "@clerk/nextjs";
+import { DialogClose } from "@radix-ui/react-dialog";
 
 interface ConfirmDeleteProps {
-  onClose: () => void;
   collectionId: number;
 }
 
-export default function ConfirmDelete({ onClose, collectionId }: ConfirmDeleteProps) {
+export default function ConfirmDelete({ collectionId }: ConfirmDeleteProps) {
+  const { userId } = useAuth();
+  const { deleteCollection } = useCollectionsStore();
 
-
-  // function handleDeleteCollection(collectionId: number) {
-  //   dispatch(deleteCollection(collectionId));
-  // }
+  const handleDeleteCol = () => {
+    if (userId) {
+      deleteCollection(String(userId), collectionId)
+    }
+  }
 
   return (
     <div className="flex flex-col">
@@ -24,13 +31,14 @@ export default function ConfirmDelete({ onClose, collectionId }: ConfirmDeletePr
           <p className="text-lg font-semibold">Are you sure?</p>
         </div>
         <div className="flex items-center justify-end gap-4">
-          <button type="submit" className={`dark:border-drkbrd cursor-pointer rounded-md border px-3 py-1.5 shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:text-white`} onClick={() => onClose()}>
-            Cancel
-          </button>
-          <button type="submit" className={`cursor-pointer rounded-md bg-red-500 px-3 py-1.5 font-semibold text-white shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}>
+          <DialogClose asChild>
+            <button type="submit" className={`dark:border-drkbrd cursor-pointer rounded-md border px-3 py-1.5 shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 dark:text-white`}>
+              Cancel
+            </button>
+          </DialogClose>
+          <button type="submit" className={`cursor-pointer rounded-md bg-red-500 px-3 py-1.5 font-semibold text-white shadow-sm focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`} onClick={handleDeleteCol}>
             DELETE
           </button>
-          <p>{collectionId}</p>
         </div>
       </div>
     </div>

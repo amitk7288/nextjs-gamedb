@@ -13,21 +13,21 @@ import { useFavoritesStore } from "@/store/favStore";
 import { useWishStore } from "@/store/wishStore";
 
 export default function Home() {
- const { userId } = useAuth();
+  const { userId } = useAuth();
 
- const { favIds, fetchFavorites, toggleFavorite } = useFavoritesStore();
-   useEffect(() => {
-     if (userId) {
-       fetchFavorites(String(userId));
-     }
-   }, [userId, fetchFavorites]);
+  const { favIds, fetchFavorites, toggleFavorite } = useFavoritesStore();
+    useEffect(() => {
+      if (userId) {
+        fetchFavorites(String(userId));
+      }
+    }, [userId, fetchFavorites]);
 
- const { wishIds, fetchWishes, toggleWishes } = useWishStore();
-   useEffect(() => {
-     if (userId) {
-       fetchWishes(String(userId));
-     }
-   }, [userId, fetchWishes]);
+  const { wishIds, fetchWishes, toggleWishes } = useWishStore();
+    useEffect(() => {
+      if (userId) {
+        fetchWishes(String(userId));
+      }
+    }, [userId, fetchWishes]);
   
   const {
     data: actionGames,

@@ -9,6 +9,7 @@ import { useFetchGenres } from "@/hooks/useFetchGenres";
 import { PiSquaresFourDuotone } from "react-icons/pi";
 import { useAuth } from "@clerk/nextjs";
 import { useFavoritesStore } from "@/store/favStore";
+import { useWishStore } from "@/store/wishStore";
 
 export default function Genre() {
   const { userId } = useAuth();
@@ -19,6 +20,15 @@ export default function Genre() {
       fetchFavorites(String(userId));
     }
   }, [userId, fetchFavorites]);
+
+  const { wishIds, fetchWishes, toggleWishes } = useWishStore();
+  useEffect(() => {
+    if (userId) {
+      fetchWishes(String(userId));
+    }
+  }, [userId, fetchWishes]);
+
+
   const params = useParams<{genreId: string, genreTitle: string}>();
   const gameGenreId = parseInt(params.genreId);
 
@@ -50,6 +60,10 @@ export default function Genre() {
           isFav={favIds.includes(Number(game.id))}
           onFavClick={(gameId: number) => {
             if (userId) toggleFavorite(String(userId), gameId);
+          }}
+          isWish={wishIds.includes(Number(game.id))}
+          onWishClick={(gameId: number) => {
+            if (userId) toggleWishes(String(userId), gameId);
           }}
         />
       ))}
