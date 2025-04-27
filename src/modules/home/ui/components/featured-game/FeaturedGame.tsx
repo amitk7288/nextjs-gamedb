@@ -1,4 +1,3 @@
-//import GenreTag from "./GenreTag";
 import Link from "next/link";
 import Image from "next/image";
 import gameImg from "../../../../../../public/hogwarts-legacy.webp";
@@ -9,7 +8,6 @@ export default function FeaturedGame() {
   return (
     <div data-testid="featuredGame" className="grid gap-3 md:grid-cols-[60%_auto] md:gap-4">
       <div className="relative">
-        <div className="absolute m-3 flex items-center gap-2">{/* <GenreTag /> */}</div>
         <div className="absolute bottom-0 right-0 z-10 m-3 flex items-center gap-2">
           <Link href={`/game/906547/hogwarts-legacy`}>
             <button className="from-blue-500 hover:to-blue-500 to-green-600 hover:from-green-600 dark:border-drkbrd dark:bg-drkbg flex w-fit items-center justify-center rounded-md bg-gradient-to-r px-2 py-[5px] dark:text-white cursor-pointer">

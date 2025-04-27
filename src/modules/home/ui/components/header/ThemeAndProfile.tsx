@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { useTheme, useSetTheme } from "@/store/theme.store";
 import { PiSun, PiMoonStars, PiMagnifyingGlass } from "react-icons/pi";
 import { Button } from "@/modules/shared/ui/components/shadcn-comps/button";
@@ -16,6 +17,11 @@ function ThemeAndProfile() {
   const handleClickMobSearch = () => {
     setSearchOpen(!isSearchOpen);
   };
+
+  useEffect(() => {
+    document.documentElement.setAttribute("data-mode", theme);
+    document.documentElement.classList.toggle("dark", theme === "dark");
+  }, [theme]);
 
   return (
     <div id="right-box" className="flex basis-auto items-center justify-between gap-3">

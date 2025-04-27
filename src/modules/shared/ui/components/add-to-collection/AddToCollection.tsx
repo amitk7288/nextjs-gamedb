@@ -5,8 +5,6 @@ import { PiPlusBold } from "react-icons/pi";
 import { useCollectionsStore } from "@/store/collectionStore";
 import { useAuth } from "@clerk/nextjs";
 import { DialogClose } from "@radix-ui/react-dialog";
-// import { RiBookmarkFill } from "react-icons/ri";
-// import { MdOutlineBookmarkAdd } from "react-icons/md";
 
 type AddToCollectionProps = {
   gameId: number;
