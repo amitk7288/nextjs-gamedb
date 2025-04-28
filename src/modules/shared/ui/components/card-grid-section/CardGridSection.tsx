@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { CardGridSectionProps } from "@/modules/shared/types/CardGridSection.type";
 
-export default function CardGridSection({ children, title, icon, btnLink }: CardGridSectionProps) {
+export default function CardGridSection({ children, title, icon, btnText, btnLink }: CardGridSectionProps) {
   return (
     <div className="mb-10 flex flex-col gap-3 p-2">
       <div className="flex items-center gap-2">
@@ -12,8 +12,8 @@ export default function CardGridSection({ children, title, icon, btnLink }: Card
       {btnLink && (
         <div className="mt-5">
           <Link href={btnLink}>
-            <button className="from-blue-500 to-green-600 hover:from-green-600 hover:to-blue-500 dark:border-drkbrd dark:bg-drkbg flex w-fit items-center justify-center rounded-md bg-gradient-to-r px-2 py-[5px] dark:text-white cursor-pointer">
-              <p className="xs:text-lg text-xs tracking-wide text-white 2xl:text-lg">{`See all ${title} games`}</p>
+            <button className="dark:border-drkbrd dark:bg-drkbg flex w-fit cursor-pointer items-center justify-center rounded-md bg-gradient-to-r from-blue-500 to-green-600 px-2 py-[5px] hover:from-green-600 hover:to-blue-500 dark:text-white">
+              <p className="xs:text-lg text-xs tracking-wide text-white 2xl:text-lg">{`See all ${btnText} games`}</p>
             </button>
           </Link>
         </div>
