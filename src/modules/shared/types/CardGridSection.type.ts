@@ -5,4 +5,5 @@ export interface CardGridSectionProps {
   title: string;
   icon: IconType;
   btnLink?: string;
+  btnText?: string;
 }
